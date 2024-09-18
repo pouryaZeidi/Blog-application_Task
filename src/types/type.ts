@@ -5,3 +5,8 @@ export type InputComponentProps = {
     value: string; 
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; 
   };
+  export type cardprops = {
+    txt:string;
+    src:string;
+    des:string;
+  }

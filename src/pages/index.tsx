@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
 
@@ -17,7 +18,7 @@ export default function Home() {
     <div>
       <main className="">
         <Navbar/>
-        
+        <Card txt={"adscsd"} src={"/1.jpg"} des={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis error nisi adipisci, excepturi, velit amet explicabo est eaque"} />
       </main>
       </div>
        
