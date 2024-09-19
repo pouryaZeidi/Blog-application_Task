@@ -1,3 +1,5 @@
+import { setToken } from "@/app/featurs/userSlice";
+import { useAppDispatch } from "@/app/hook";
 import Card from "@/components/Card";
 import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
@@ -14,12 +16,16 @@ const geistMono = localFont({
 });
 
 export default function Home() {
+
+  const dispatch = useAppDispatch()
+
   return (
     <div>
+      <button onClick={()=>dispatch(setToken('pooria'))}>Set token</button>
       <main className="">
-        <Navbar/>
         <Card txt={"adscsd"} src={"/1.jpg"} des={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis error nisi adipisci, excepturi, velit amet explicabo est eaque"} />
       </main>
+
       </div>
        
   );

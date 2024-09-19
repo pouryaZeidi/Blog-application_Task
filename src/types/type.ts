@@ -10,3 +10,8 @@ export type InputComponentProps = {
     src:string;
     des:string;
   }
+  export type idprops = {
+    title:string;
+    src:string;
+    desc:string;
+  }

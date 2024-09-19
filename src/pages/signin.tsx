@@ -2,9 +2,16 @@ import Link from 'next/link';
 import React from 'react';
 import { useRouter } from 'next/router'; 
 import InputComponent from '@/components/InputComponent';
+import { signInWithGooglePopup , createUserDocumentFromAuth } from '@/utils/firebase/firebase.utils';
+// import { User } from 'firebase/auth';
 
 const SignIn = () => {
   const router = useRouter(); 
+  const logGoogleUser = async () => {
+    const {user} = await signInWithGooglePopup();
+   const userDocRef = await createUserDocumentFromAuth (user)
+    // const userDocRef = await createUserDocumentFromAuth(user);
+  };
 
   // Function to handle navigation to the previous page
   const handleBackClick = () => {
@@ -52,6 +59,9 @@ const SignIn = () => {
           <button className='w-full border bg-gray-400 p-4 text-2xl rounded-3xl hover:text-blue-500 hover:bg-black  font-bold'>
             LOGIN
           </button>
+          <button onClick={logGoogleUser} className='w-full border bg-gray-400 p-4 text-2xl rounded-3xl hover:text-blue-500 hover:bg-black  font-bold'>
+            LOGIN With Google
+          </button>
           <Link href={'/signup'} className='bg-white rounded-3xl p-3 text-blue-500'>
             Create a new account (tap here)
           </Link>
@@ -62,3 +72,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
