@@ -3,6 +3,7 @@ export type InputComponentProps = {
     placeholder: string;
     type: string;
     value: string; 
+    name: string; 
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; 
   };
   export type cardprops = {

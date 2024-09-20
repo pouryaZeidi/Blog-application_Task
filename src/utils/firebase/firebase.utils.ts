@@ -1,18 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider,
-  User,
-} from 'firebase/auth';
+import {getAuth,createUserWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword,} from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import notif from '../notif';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAqU7FzBLzXIXe3CrFWEplLuv8lGsAcwFM",
   authDomain: "build-app-indian.firebaseapp.com",
@@ -23,41 +14,54 @@ const firebaseConfig = {
   measurementId: "G-3142T67DRS"
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-
 const provider = new GoogleAuthProvider();
-
-provider.setCustomParameters({
-  prompt: 'select_account',
-});
+provider.setCustomParameters({prompt: 'select_account',});
 
 export const auth = getAuth();
+
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth: User) => {
-  const userDocRef = doc(db, 'users', userAuth.uid);
-
-  const userSnapshot = await getDoc(userDocRef);
-
-  if (!userSnapshot.exists()) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
-
-    try {
-      await setDoc(userDocRef, {
-        displayName,
-        email,
-        createdAt,
-      });
-    } catch (error) {
-      console.log('error creating the user', error.message);
+export const createUserDocumentFromAuth = async ( 
+    userAuth:any,
+    additionalInformation = {}
+  ) => {
+    if (!userAuth) return;
+  
+    const userDocRef = doc(db, 'users', userAuth.uid);
+  
+    const userSnapshot = await getDoc(userDocRef);
+  
+    if (!userSnapshot.exists()) {
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+  
+      try {
+        await setDoc(userDocRef, {
+          displayName,
+          email,
+          createdAt,
+          ...additionalInformation,
+        });
+      } catch (error) {
+        console.log('error creating the user', error);
+      }
     }
-  }
+  
+    return userDocRef;
+};
+  
+export const signUpFirebase = async (email:string,pass:string,displayName:string) => {
+    const response = await createUserWithEmailAndPassword(auth,email,pass);
+    await createUserDocumentFromAuth(response.user, { displayName });
+    return response
+}
 
-  return userDocRef;
+export const signInUserWithEmailAndPassword = async (email:string, password:string) => {
+    if (!email || !password) return;
+    return await signInWithEmailAndPassword(auth, email, password);
 };
 
   
